@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfume 曲名から品番検索</title>
+</head>
+<body>
+  <h1>Perfume 曲名から品番を検索</h1>
+  <label for="song-name">曲名を入力してください:</label>
+  <input type="text" id="song-name">
+  <button onclick="searchCatalogNumber()">検索</button>
+  <p id="result"></p>
+
+  <script>
+    const data = {
+      "ポリリズム": "TKCA-72933",
+      "チョコレイト・ディスコ": "TKCA-72940",
+      "Magic of Love": "TKCA-73004"
+    };
+
+    function searchCatalogNumber() {
+      const songName = document.getElementById('song-name').value;
+      const result = data[songName] || "曲名が見つかりませんでした";
+      document.getElementById('result').innerText = result;
+    }
+  </script>
+</body>
+</html>
