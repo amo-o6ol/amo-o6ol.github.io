@@ -86,10 +86,25 @@
     }
 
     #history {
-      margin-top: 20px;
-      padding: 0;
-      list-style-type: none;
-    }
+  max-height: 200px;  /* 履歴リストの最大高さを指定 */
+  overflow-y: auto;   /* スクロール可能にする */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;  /* コンテナの高さを固定 */
+  max-width: 600px;
+  padding: 20px;
+  background-color: black;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#search-btn {
+  margin-top: 10px;  /* 検索ボタンとの間にスペースを作る */
+}
+
 
     #history li {
       background-color: pink;  /* 背景色をピンクに変更 */
@@ -426,11 +441,11 @@
       function searchCatalogNumber() {
         const songNameInput = document.getElementById('song-name').value.trim().toLowerCase().replace(/\s+/g, ''); // 入力値を小文字にし、空白を削除
         const correctSongName = lowercaseData[songNameInput]; // 正しい表記を取得
-        const result = correctSongName ? `${correctSongName} - 品番: ${data[correctSongName]}` : "曲名が見つかりませんでした"; 
+        const result = correctSongName ? `${correctSongName} - 品番: ${data[correctSongName]}` : "曲名が見つかりませんでした🥺"; 
 
         document.getElementById('result').innerText = `検索結果: ${result}`;
 
-        if (correctSongName && result !== "曲名が見つかりませんでした") {
+        if (correctSongName && result !== "曲名が見つかりませんでした🥺") {
           searchHistory.push({ songName: correctSongName, catalogNumber: data[correctSongName] });
           displayHistory();
         }
@@ -451,7 +466,7 @@
           
           catalogNumberElem.addEventListener('click', () => {
             navigator.clipboard.writeText(entry.catalogNumber).then(() => {
-              alert('品番がコピーされました!');
+              alert('品番がコピーされました😍');
             });
           });
 
@@ -464,7 +479,7 @@
       document.getElementById('copy-all-btn').addEventListener('click', () => {
         const allCatalogNumbers = searchHistory.map(entry => entry.catalogNumber).join('\n');
         navigator.clipboard.writeText(allCatalogNumbers).then(() => {
-          alert('すべての品番がコピーされました!');
+          alert('すべての品番がコピーされました🤩');
         });
       });
     });
