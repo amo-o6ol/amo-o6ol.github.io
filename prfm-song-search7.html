@@ -562,7 +562,7 @@
       document.getElementById('copy-all-btn').addEventListener('click', function() {
         const allCatalogNumbers = searchHistory.map(entry => entry.catalogNumber).join('\n');
         navigator.clipboard.writeText(allCatalogNumbers).then(function() {
-          alert("すべての品番をコピーしました😍");
+          alert("すべての品番をコピーしました🤩");
         }).catch(function(err) {
           console.error('コピーに失敗しました😭', err);
         });
