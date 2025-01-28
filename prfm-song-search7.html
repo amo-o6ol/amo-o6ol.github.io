@@ -32,7 +32,7 @@
     }
 
     h2 {
-  color: pink; 
+      color: pink; 
     }
 
     label {
@@ -86,29 +86,24 @@
     }
 
     #history {
-  max-height: 200px;  /* 履歴リストの最大高さを指定 */
-  overflow-y: auto;   /* スクロール可能にする */
-}
+      max-height: 200px; 
+      overflow-y: auto;   
+    }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 80vh;  /* コンテナの高さを固定 */
-  max-width: 600px;
-  padding: 20px;
-  background-color: black;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#search-btn {
-  margin-top: 10px;  /* 検索ボタンとの間にスペースを作る */
-}
-
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 80vh;  
+      max-width: 600px;
+      padding: 20px;
+      background-color: black;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
     #history li {
-      background-color: pink;  /* 背景色をピンクに変更 */
-      color: white;  /* 文字色を白に変更 */
+      background-color: pink;  
+      color: white;  
       margin: 5px 0;
       padding: 10px;
       border-radius: 4px;
@@ -118,20 +113,18 @@
       align-items: center;
     }
 
-    /* ホバーの部分を削除 */
     .catalog-number {
       cursor: pointer;
       color: white;
       text-decoration: underline;
     }
 
-    /* 品番コピー部分のホバー効果 */
-.catalog-number:hover {
-  color: #C299FF; /* 品番がホバーされたときに青色に変わる */
-  text-decoration: underline; /* アンダーラインを引いて、ユーザーがクリック可能だと分かるように */
-  cursor: pointer; /* カーソルをポインターに変更 */
-  font-weight: bold; /* 少し太字にして強調 */
-}
+    .catalog-number:hover {
+      color: #C299FF; 
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: bold; 
+    }
 
     .copy-button {
       background-color: pink;
@@ -156,11 +149,11 @@
     <input type="text" id="song-name">
     <button id="search-btn" type="button">検索</button>
 
-    <div id="result"></div> <!-- 検索結果を表示 -->
+    <div id="result"></div> 
 
     <h2>検索履歴</h2>
-    <ul id="history"></ul> <!-- 検索履歴を表示 -->
-    <button id="copy-all-btn" class="copy-button">品番をまとめてコピー</button> <!-- 複数品番をコピーするボタン -->
+    <ul id="history"></ul> 
+    <button id="copy-all-btn" class="copy-button">品番をまとめてコピー</button>
   </div>
 
   <script>
@@ -337,8 +330,9 @@
       "OMAJINAI★ペロリ":"ASH-1001-01",
      
       "Perfumeのただただラジオが好きだからレイディオ！ 2":"UPCX-1679-03"
+        
       };
-    
+
       const aliases = {
         "PSPS": "パーフェクトスター・パーフェクトスタイル",
         "パーフェクトスター": "パーフェクトスター・パーフェクトスタイル",
@@ -349,16 +343,16 @@
         "エレワ": "エレクトロ・ワールド", 
         "水道夏":"スウィートドーナッツ", 
 
-        "ポリリズム": "ポリリズム",  
-        "プラスマ": "plastic smile",  
-        "BCL": "Baby cruising Love",
+        "ポリリズム":"ポリリズム",  
+        "プラスマ":"plastic smile",  
+        "BCL":"Baby cruising Love",
         "チョコレイトディスコ": "チョコレイト・ディスコ",
         "チョコ":"チョコレイト・ディスコ",
         "セラガ":"セラミックガール",
         "竹目竹目":"Take me Take me",
         "シクシク":"シークレットシークレット",
         "TSPS":"Twinkle Snow Powdery Snow",
-        "パピラ": "Puppy love",
+        "パピラ":"Puppy love",
 
         "ラブワ":"love the world",
         "ltw":"love the world",
@@ -456,74 +450,86 @@
         "かれぼ":"彼氏募集中",
         "おまペロ":"OMAJINAI★ペロリ",
         "おまぺろ":"OMAJINAI★ペロリ",
+
       };
-    
-      // 曲名を小文字にして統一
+
+      
+
+      // 曲名と略称を組み合わせて検索用データを作成
       const lowercaseData = {};
       for (let songName in data) {
-        lowercaseData[songName.toLowerCase().replace(/\s+/g, '')] = songName;  // 空白も削除
+        lowercaseData[songName.toLowerCase().replace(/\s+/g, '')] = { song: songName, catalogNumber: data[songName] };
       }
       for (let alias in aliases) {
-        lowercaseData[alias.toLowerCase().replace(/\s+/g, '')] = aliases[alias];  // 通称も小文字にして空白削除
+        lowercaseData[alias.toLowerCase().replace(/\s+/g, '')] = { song: aliases[alias], catalogNumber: data[aliases[alias]] };
       }
-    
-      let searchHistory = [];  // 検索履歴を保存する配列
-    
+
+      let searchHistory = [];
+
       document.getElementById('search-btn').addEventListener('click', searchCatalogNumber);
-    
+
       function searchCatalogNumber() {
-        const songNameInput = document.getElementById('song-name').value.trim().toLowerCase().replace(/\s+/g, ''); // 入力値を小文字にし、空白を削除
-        const correctSongName = lowercaseData[songNameInput]; // 正しい表記を取得
+        const songNameInput = document.getElementById('song-name').value.trim().toLowerCase().replace(/\s+/g, '');
         const resultElement = document.getElementById('result');
-        const historyElement = document.getElementById('history');  // 履歴表示エリア
-    
-        // 結果が見つかった場合
-        if (correctSongName) {
-          const songVersions = [];
-    
-          // 正しい曲名に対する品番をすべて取得
-          for (const [song, catalogNumber] of Object.entries(data)) {
-            if (song.toLowerCase().includes(correctSongName)) {
+
+        // 空文字の場合は検索しない
+        if (!songNameInput) {
+          alert("検索キーワードを入力してください！");
+          return;
+        }
+
+        console.log("検索入力:", songNameInput);  // デバッグ用
+
+        const songVersions = [];
+        const seen = new Set();
+
+        // 曲名と略称の両方に対して部分一致を検索
+        for (const key in lowercaseData) {
+          if (key.includes(songNameInput)) {
+            const { song, catalogNumber } = lowercaseData[key];
+
+            // 重複しない曲のみ追加
+            if (!seen.has(song)) {
+              seen.add(song);
               songVersions.push({ song, catalogNumber });
             }
           }
-    
-          if (songVersions.length === 1) {
-            // 1つしか候補がない場合
-            displaySongResult(songVersions[0]);
-            addToHistory(songVersions[0]); // 履歴に追加
-          } else if (songVersions.length > 1) {
-            // 複数の候補がある場合
-            resultElement.innerHTML = `バージョンを選択してください:<br>`;
-    
+        }
+
+        // 結果が見つかった場合
+        if (songVersions.length > 0) {
+          if (songVersions.length > 1) {
+            resultElement.innerHTML = "一致する曲があります:<br>";
             const list = document.createElement('ul');
             songVersions.forEach(version => {
               const listItem = document.createElement('li');
               const button = document.createElement('button');
               button.textContent = `${version.song} - 品番: ${version.catalogNumber}`;
-    
-              // 曲が選ばれたらその曲の情報を表示し、履歴にも追加
+
               button.onclick = () => {
                 displaySongResult(version);
-                addToHistory(version); // 履歴に追加
+                addToHistory(version);
               };
-    
+
               listItem.appendChild(button);
               list.appendChild(listItem);
             });
             resultElement.appendChild(list);
+          } else {
+            // 結果が1つだけの場合はそのまま表示
+            displaySongResult(songVersions[0]);
+            addToHistory(songVersions[0]);
           }
         } else {
-          resultElement.innerText = "曲名が見つかりませんでした🥺";
+          resultElement.innerText = "一致する曲が見つかりませんでした🥺";
         }
       }
-    
-      // 検索結果として選択された曲を表示
+
       function displaySongResult(version) {
         const resultElement = document.getElementById('result');
         resultElement.innerHTML = `検索結果: ${version.song} - 品番: ${version.catalogNumber}`;
       }
-    
+
       function addToHistory(version) {
         searchHistory.push(version);
         updateHistoryDisplay();
@@ -532,41 +538,28 @@
       function updateHistoryDisplay() {
         const historyElement = document.getElementById('history');
         historyElement.innerHTML = "";
-    
+
         if (searchHistory.length > 0) {
           const list = document.createElement('ul');
-          searchHistory.forEach(entry => {
+          searchHistory.forEach(item => {
             const listItem = document.createElement('li');
-            listItem.innerHTML = `${entry.song} - 品番: <span class="catalog-number" data-catalog-number="${entry.catalogNumber}">${entry.catalogNumber}</span>`;
+            listItem.innerHTML = `${item.song} - 品番: <span class="catalog-number" onclick="copyToClipboard('${item.catalogNumber}')">${item.catalogNumber}</span>`;
             list.appendChild(listItem);
           });
           historyElement.appendChild(list);
-        } else {
-          historyElement.innerHTML = "履歴はありません";
         }
       }
-    
-      // Copy selected catalog number to clipboard
-      document.getElementById('history').addEventListener('click', function(event) {
-        if (event.target.classList.contains('catalog-number')) {
-          const catalogNumber = event.target.dataset.catalogNumber;
-          navigator.clipboard.writeText(catalogNumber).then(function() {
-            alert("品番をコピーしました😍: " + catalogNumber);
-          }).catch(function(err) {
-            console.error('コピーに失敗しました😭', err);
-          });
-        }
+
+      document.getElementById('copy-all-btn').addEventListener('click', function() {
+        const allCatalogNumbers = searchHistory.map(item => item.catalogNumber).join('\n');
+        navigator.clipboard.writeText(allCatalogNumbers);
+        alert("品番をコピーしました！");
       });
 
-      // Copy all catalog numbers from history
-      document.getElementById('copy-all-btn').addEventListener('click', function() {
-        const allCatalogNumbers = searchHistory.map(entry => entry.catalogNumber).join('\n');
-        navigator.clipboard.writeText(allCatalogNumbers).then(function() {
-          alert("すべての品番をコピーしました🤩");
-        }).catch(function(err) {
-          console.error('コピーに失敗しました😭', err);
-        });
-      });
+      window.copyToClipboard = function(catalogNumber) {
+        navigator.clipboard.writeText(catalogNumber);
+        alert(`${catalogNumber} をコピーしました！`);
+      };
     });
   </script>
 </body>
