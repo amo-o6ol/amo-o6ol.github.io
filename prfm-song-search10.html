@@ -545,7 +545,7 @@
 
     if (songVersions.length > 0) {
       if (songVersions.length > 1) {
-        resultElement.innerHTML = "一致する曲があります。選んでください:<br>";
+        resultElement.innerHTML = "該当する曲がいくつか見つかりました。選んでください。<br>";
         const list = document.createElement('ul');
         songVersions.forEach(version => {
           const listItem = document.createElement('li');
@@ -565,7 +565,7 @@
         addToHistory(songVersions[0]);
       }
     } else {
-      resultElement.innerText = "申し訳ありませんが、一致する曲が見つかりませんでした。もう一度お試しください。";
+      resultElement.innerText = "申し訳ありませんが、該当する曲が見つかりませんでした。もう一度お試しください。";
     }
   }
 
@@ -628,12 +628,12 @@
   document.getElementById('copy-all-btn').addEventListener('click', function() {
     const allCatalogNumbers = searchHistory.map(item => item.catalogNumber).join('\n');
     navigator.clipboard.writeText(allCatalogNumbers);
-    //alert("品番をコピーしました！");
+    alert("品番をまとめてコピーしました😍");
   });
 
   window.copyToClipboard = function(catalogNumber) {
     navigator.clipboard.writeText(catalogNumber);
-    //alert(`${catalogNumber} をコピーしました！`);
+    alert(`${catalogNumber}をコピーしました🤩` );
   };
 });
   </script>
