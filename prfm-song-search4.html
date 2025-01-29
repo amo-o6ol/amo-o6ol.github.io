@@ -28,11 +28,11 @@
 
     h1 {
       text-align: center;
-      color:pink;
+      color: pink;
     }
 
     h2 {
-  color: pink; 
+      color: pink; 
     }
 
     label {
@@ -86,29 +86,13 @@
     }
 
     #history {
-  max-height: 200px;  /* 履歴リストの最大高さを指定 */
-  overflow-y: auto;   /* スクロール可能にする */
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 80vh;  /* コンテナの高さを固定 */
-  max-width: 600px;
-  padding: 20px;
-  background-color: black;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#search-btn {
-  margin-top: 10px;  /* 検索ボタンとの間にスペースを作る */
-}
-
+      max-height: 200px; 
+      overflow-y: auto;   
+    }
 
     #history li {
-      background-color: pink;  /* 背景色をピンクに変更 */
-      color: white;  /* 文字色を白に変更 */
+      background-color: pink;  
+      color: white;  
       margin: 5px 0;
       padding: 10px;
       border-radius: 4px;
@@ -118,20 +102,16 @@
       align-items: center;
     }
 
-    /* ホバーの部分を削除 */
     .catalog-number {
       cursor: pointer;
       color: white;
       text-decoration: underline;
     }
 
-    /* 品番コピー部分のホバー効果 */
-.catalog-number:hover {
-  color: #C299FF; /* 品番がホバーされたときに青色に変わる */
-  text-decoration: underline; /* アンダーラインを引いて、ユーザーがクリック可能だと分かるように */
-  cursor: pointer; /* カーソルをポインターに変更 */
-  font-weight: bold; /* 少し太字にして強調 */
-}
+    .catalog-number:hover {
+      color: #C299FF; 
+      font-weight: bold;
+    }
 
     .copy-button {
       background-color: pink;
@@ -147,6 +127,37 @@
       background-color: #C299FF;
     }
 
+    .delete-button {
+      background-color: pink;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      width: auto;          /* 幅を自動にして文字に合わせる */
+      min-width: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .delete-button:hover {
+      background-color: #C299FF;
+    }
+/* 初期状態で非表示 */
+#copy-all-btn, #clear-history-btn {
+  display: none;
+}
+
+/* 検索候補が多い場合にスクロールできるように */
+#result ul {
+  max-height: 300px;   /* 最大高さを設定 */
+  overflow-y: auto;     /* 垂直方向にスクロールを許可 */
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+
+
   </style>
 </head>
 <body>
@@ -156,21 +167,21 @@
     <input type="text" id="song-name">
     <button id="search-btn" type="button">検索</button>
 
-    <div id="result"></div> <!-- 検索結果を表示 -->
+    <div id="result"></div> 
 
     <h2>検索履歴</h2>
-    <ul id="history"></ul> <!-- 検索履歴を表示 -->
-    <button id="copy-all-btn" class="copy-button">品番をまとめてコピー</button> <!-- 複数品番をコピーするボタン -->
+    <ul id="history"></ul> 
+    <button id="copy-all-btn" class="copy-button">品番をまとめてコピー</button>
+    <button id="clear-history-btn" class="copy-button">履歴をまとめて削除</button>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // 曲名（正しい表記）とその品番を保持
       const data = {
         "パーフェクトスター・パーフェクトスタイル": "TKCA-73167-01",
         "リニアモーターガール": "TKCA-73167-02",
         "コンピューターシティ": "TKCA-73167-03",
-        "エレクトロ・ワールド": "TKCA-73167-04",
+        "エレクトロ・ワールド(Album Version)": "TKCA-73167-04",
         "引力": "TKCA-73167-05",
         "モノクロームエフェクト": "TKCA-73167-06",
         "ビタミンドロップ": "TKCA-73167-07",
@@ -196,7 +207,7 @@
       "Take off":"TKCA-73445-01",
       "love the world":"TKCA-73445-02",
       "Dream Fighter":"TKCA-73445-03",
-      "edge":"TKCA-73445-04",
+      "edge (⊿-mix)":"TKCA-73445-04",
       "NIGHT FLIGHT":"TKCA-73445-05",
       "Kiss and Music":"TKCA-73445-06",
       "Zero Gravity":"TKCA-73445-07",
@@ -204,11 +215,11 @@
       "The best thing":"TKCA-73445-09",
       "Speed of Sound":"TKCA-73445-10",
       "ワンルーム・ディスコ":"TKCA-73445-11",
-      "願い":"TKCA-73445-12",
+      "願い (Album-mix)":"TKCA-73445-12",
        
       "The Opening":"TKCA-73735-01",
-      "レーザービーム":"TKCA-73735-02",
-      "GLITTER":"TKCA-73735-03",
+      "レーザービーム(Album-mix)":"TKCA-73735-02",
+      "GLITTER(Album-mix)":"TKCA-73735-03",
       "ナチュラルに恋して":"TKCA-73735-04",
       "MY COLOR":"TKCA-73735-05",
       "時の針":"TKCA-73735-06",
@@ -222,8 +233,8 @@
       "スパイス":"TKCA-73735-14",
 
       "Enter the Sphere":"UPCP-1001-01",
-      "Spring of Life":"UPCP-1001-02",
-      "Magic of Love":"UPCP-1001-03",
+      "Spring of Life (Album-mix)":"UPCP-1001-02",
+      "Magic of Love (Album-mix)":"UPCP-1001-03",
       "Clockwork":"UPCP-1001-04",
       "1mm":"UPCP-1001-05",
       "未来のミュージアム":"UPCP-1001-06",
@@ -233,22 +244,25 @@
       "だいじょばない":"UPCP-1001-10",
       "Handy Man":"UPCP-1001-11",
       "Sleeping Beauty":"UPCP-1001-12",
-      "Spending all my time":"UPCP-1001-13",
+      "Spending all my time (Album-mix)":"UPCP-1001-13",
       "Dream Land":"UPCP-1001-14",
+
+      "Spending all my time (Radio Mix)":"UPCP-9009-15",
+      "Spending all my time (DV&LM remix)":"UPCP-9009-16",
       
       "Navigate": "UPCP-1002-01",
       "Cosmic Explorer": "UPCP-1002-02",
       "Miracle Worker": "UPCP-1002-03",
       "Next Stage with YOU": "UPCP-1002-04",
       "STORY": "UPCP-1002-05",
-      "FLASH": "UPCP-1002-06",
-      "Sweet Refrain": "UPCP-1002-07",
+      "FLASH (Album-mix)": "UPCP-1002-06",
+      "Sweet Refrain (Album-mix)": "UPCP-1002-07",
       "Baby Face": "UPCP-1002-08",
-      "TOKIMEKI LIGHTS": "UPCP-1002-09",
-      "STAR TRAIN": "UPCP-1002-10",
+      "TOKIMEKI LIGHTS (Album-mix)": "UPCP-1002-09",
+      "STAR TRAIN (Album-mix)": "UPCP-1002-10",
       "Relax In The City": "UPCP-1002-11",
       "Pick Me Up": "UPCP-1002-12",
-      "Cling Cling": "UPCP-1002-13",
+      "Cling Cling (Album-mix)": "UPCP-1002-13",
       "Hold Your Hand": "UPCP-1002-14",
 
       "Start-Up": "UPCP-1003-01",
@@ -269,8 +283,8 @@
       "ナナナナナイロ":"UPCP-1005-03-18",
 
       "Plasma":"UPCP-1009-01",
-      "Time Warp":"UPCP-1009-02",
-      "ポリゴンウェイヴ":"UPCP-1009-03",
+      "Time Warp (v1.1)":"UPCP-1009-02",
+      "ポリゴンウェイヴ (Original Mix)":"UPCP-1009-03",
       "再生":"UPCP-1009-04",
       "Spinning World":"UPCP-1009-05",
       "マワルカガミ":"UPCP-1009-06",
@@ -293,17 +307,42 @@
       "メビウス": "UPCP-1010-10",
 
       "Moon":"UPCP-5014-01",
+
+      "マワルカガミ(polygon wave live ver.)":"UPCP-5013-02",
+
+      "ポリゴンウェイヴ":"UPCP-1008-02",
+      "ポリゴンウェイヴ (Remix)":"UPCP-1008-03",
       "システムリブート":"UPCP-1008-07",
+
+      "Time Warp":"UPCP-5012-01",
+
+      "エレクトロ・ワールド":"UPCP-1005-01-04",
       "SEVENTH HEAVEN":"UPCP-1005-01-08",
       "FAKE IT":"UPCP-1005-02-07",
+      "レーザービーム":"UPCP-1005-02-08",
+      "Spring of Life":"UPCP-1005-02-12",
+      "Spending all my time":"UPCP-1005-02-13",
       "Hurly Burly":"UPCP-1005-02-14",
+      "Sweet Refrain":"UPCP-1005-03-02",
+      "Cling Cling":"UPCP-1005-03-03",
       "DISPLAY":"UPCP-1005-03-05",
+      "STAR TRAIN":"UPCP-1005-03-08",
+      "FLASH":"UPCP-1005-03-10",
+      "TOKIMEKI LIGHTS":"UPCP-5008",
       "イミテーションワールド":"UPCP-9012-03",
       "透明人間":"UPCP-5007-03",
       "いじわるなハロー":"UPCP-5006-04",
       "恋は前傾姿勢":"UPCP-5005-02",
+      "Magic of Love":"UPCP-5004-01",
       "コミュニケーション":"UPCP-5001-02",
+      "チョコレイト・ディスコ (2012-Mix)":"TKCA-73845-05",
+      "MY COLOR (LTW-Mix)":"TKCA-73845-15",
+      "GLITTER":"TKCA-73725-02",
       "23:30":"TKCA-73435-02",
+      "願い":"TKCA-73395-02",
+      "edge":"TKCA-73335-02",
+      "edge -extended mix-":"TKCA-73335-04",
+      "ポリリズム -extra short edit-":"TKCA-73255-03",
       "エレベーター":"BEHV-0008-02",
       "おいしいレシピ":"BEHV-0008-03",
       "スウィートドーナッツ":"BEHV-0002-0003-01",
@@ -311,189 +350,292 @@
       "ジェニーはご機嫌ななめ":"BEHV-0002-0003-03",
       "彼氏募集中":"ASH-1002-01",
       "OMAJINAI★ペロリ":"ASH-1001-01",
+     
       "Perfumeのただただラジオが好きだからレイディオ！ 2":"UPCX-1679-03"
-      };
-
-      // 通称と略称を管理するオブジェクト
-      const aliases = {
-        "PSPS": "パーフェクトスター・パーフェクトスタイル",
-        "パーフェクトスター": "パーフェクトスター・パーフェクトスタイル",
-        "パーフェクトスターパーフェクトスタイル": "パーフェクトスター・パーフェクトスタイル",
-        "リニア": "リニアモーターガー",
-        "シティ":"コンピューターシティ",
-        "エレクトロワールド":"エレクトロ・ワールド",
-        "エレワ": "エレクトロ・ワールド", 
-        "水道夏":"スウィートドーナッツ", 
-
-        "ポリリズム": "ポリリズム",  
-        "プラスマ": "plastic smile",  
-        "BCL": "Baby cruising Love",
-        "チョコレイトディスコ": "チョコレイト・ディスコ",
-        "チョコ":"チョコレイト・ディスコ",
-        "セラガ":"セラミックガール",
-        "竹目竹目":"Take me Take me",
-        "シクシク":"シークレットシークレット",
-        "TSPS":"Twinkle Snow Powdery Snow",
-        "パピラ": "Puppy love",
-
-        "ラブワ":"love the world",
-        "ltw":"love the world",
-        "DF":"Dream Fighter",
-        "ドリファイ":"Dream Fighter",
-        "エッジ":"edge",
-        "NF":"NIGHT FLIGHT",
-        "ゼログラ":"Zero Gravity",
-        "ISLU":"I still love U",
-        "tbt":"The best thing",
-        "ワンルーム":"ワンルーム・ディスコ",
-        "ワンコ":"ワンルーム・ディスコ",
-
-        "レザビ":"レーザービーム",
-        "ナチュ恋":"ナチュラルに恋して",
-        "マイカラー":"MY COLOR",
-        "ねえ":"ねぇ",
-        "ハバスト":"Have a Stroll",
-        "不自然":"不自然なガール",
-        "フシガ":"不自然なガール",
-
-        "sol":"Spring of Life",
-        "mol":"Magic of Love",
-        "みらみゅ":"未来のミュージアム",
-        "みらミュ":"未来のミュージアム",
-        "PM":"Party Maker",
-        "samt":"Spending all my time",
-        "スペンディング":"Spending all my time",
-        "サムティー":"Spending all my time",
-
-        "CE":"Cosmic Explorer",
-        "ミラワ":"Miracle Worker",
-        "ミラクルワーカー":"Miracle Worker",
-        "Next Stage": "UPCP-1002-04",
-        "フラッシュ":"FLASH",
-        "トキメキライツ":"TOKIMEKI LIGHTS",
-        "スタトレ":"STAR TRAIN",
-        "リラクシ":"Relax In The City",
-        "ピックミー":"Pick Me Up",
-        "くりんくりん":"Cling Cling",
-        "クリンクリン":"Cling Cling",
-
-        "FP":"Future Pop",
-        "イフワナ":"If you wanna",
-        "イフュワナ":"If you wanna",
-        "イワナ":"If you wanna",
-        "罠":"If you wanna",
-        "TG":"TOKYO GIRL",
-        "フュージョン":"FUSION",
-        "スイカ割り":"超来輪",
-        "すいかわり":"超来輪",
-
-        "ナナナ":"ナナナナナイロ",
         
-        "ぷらずま":"Plasma",
-        "ぷらずまぁ":"Plasma",
-        "プラズマ":"Plasma",
-        "ﾌﾟﾗｽﾞﾏ":"Plasma",
-        "ｽﾞﾏ":"Plasma",
-        "タイムワ":"Time Warp",
-        "TW":"Time Warp",
-        "ポリゴンウェイブ":"ポリゴンウェイヴ",
-        "ポリゴン":"ポリゴンウェイヴ",
-        "ポヴ":"ポリゴンウェイヴ",
-        "スピワ":"Spinning World",
-        "スピニンウォウ":"Spinning World",
-        "ｽﾋﾟﾆﾝｳォｳ":"Spinning World",
-        "ミラーボール":"マワルカガミ",
-        "ミラーボール(仮)":"マワルカガミ",
-        "ドライビン":"Drive’n The Rain",
-        "ドライビンザレイン":"Drive’n The Rain",
-        "どらいびん":"Drive’n The Rain",
-        "ビトちゃん":"ハテナビト",
-        "アンド":"アンドロイド＆",
-        "&":"アンドロイド＆",
-        "さよプラ":"さよならプラスティックワールド",
+      };
 
-        "恋雲":"ラヴ・クラウド",
-        "コズトリ":"Cosmic Treat",
-        "今":"IMA IMA IMA",
-        "IMA":"IMA IMA IMA",
-        "すみっコ":"すみっコディスコ",
-        "すみっこ":"すみっコディスコ",
-        "熱帯夜":"時空花",
+      const aliases = {
+        "PSPS": ["パーフェクトスター・パーフェクトスタイル"],
+        "パーフェクトスター": ["パーフェクトスター・パーフェクトスタイル"],
+        "パーフェクトスターパーフェクトスタイル":["パーフェクトスター・パーフェクトスタイル"],
+        "リニア": ["リニアモーターガール]"],
+        "シティ":["コンピューターシティ"],
+        "エレクトロワールド":["エレクトロ・ワールド"],
+        //"エレクトロワールド":"エレクトロ・ワールド(Album Version)",
+        "エレワ": ["エレクトロ・ワールド"], 
+        //"エレワ": "エレクトロ・ワールド(Album Version)",
+        "水道夏":["スウィートドーナッツ"],
+        "ポリリズム":["ポリリズム"],  
+        "プラスマ":["plastic smile"],  
+        "BCL":["Baby cruising Love"],
+        "チョコレイトディスコ": ["チョコレイト・ディスコ"],
+        //"チョコレイトディスコ": "チョコレイト・ディスコ (2012-Mix)",
+        "チョコ":["チョコレイト・ディスコ"],
+        //"チョコ":"チョコレイト・ディスコ (2012-Mix)",
+        "セラガ":["セラミックガール"],
+        "竹目竹目":["Take me Take me"],
+        "シクシク":["シークレットシークレット"],
+        "TSPS":["Twinkle Snow Powdery Snow"],
+        "パピラ":["Puppy love"],
+        "ラブワ":["love the world"],
+        "ltw":["love the world"],
+        "DF":["Dream Fighter"],
+        "ドリファイ":["Dream Fighter"],
+        "エッジ":["edge"],
+        "エッジ":["edge (⊿-mix)"],
+        "NF":["NIGHT FLIGHT"],
+        "ゼログラ":["Zero Gravity"],
+        "ISLU":["I still love U"],
+        "tbt":["The best thing"],
+        "ワンルーム":["ワンルーム・ディスコ"],
+        "ワンコ":["ワンルーム・ディスコ"],
+        "レザビ":["レーザービーム"],
+        "レザビ":["レーザービーム(Album-mix)"],
+        "ナチュ恋":["ナチュラルに恋して"],
+        "マイカラー":["MY COLOR"],
+        "マイカラー":["MY COLOR (LTW-Mix)"],
+        "ねえ":["ねぇ"],
+        "ハバスト":["Have a Stroll"],
+        "不自然":["不自然なガール"],
+        "フシガ":["不自然なガール"],
+        "sol":["Spring of Life"],
+        //"sol":"Spring of Life (Album-mix)",
+        "mol":["Magic of Love"],
+        //"mol":"Magic of Love (Album-mix)",
+        "みらみゅ":["未来のミュージアム"],
+        "みらミュ":["未来のミュージアム"],
+        "PM":["Party Maker"],
+        "samt":["Spending all my time"],
+       // "samt":"Spending all my time (Album-mix)",
+        //"samt":"Spending all my time (Radio Mix)",
+        //"samt":"Spending all my time (DV&LM remix)",
+        "スペンディング":["Spending all my time"],
+       // "スペンディング":"Spending all my time (Album-mix)",
+        //"スペンディング":"Spending all my time (Radio Mix)",
+        //"スペンディング":"Spending all my time (DV&LM remix)",
+        "サムティー":["Spending all my time"],
+        //"サムティー":"Spending all my time (Album-mix)",
+        //"サムティー":"Spending all my time (Radio Mix)",
+        //"サムティー":"Spending all my time (DV&LM remix)",
+        "CE":["Cosmic Explorer"],
+        "ミラワ":["Miracle Worker"],
+        "ミラクルワーカー":["Miracle Worker"],
+        "Next Stage": ["Next Stage with YOU"],
+        "フラッシュ":["FLASH"],
+        "フラッシュ":["FLASH (Album-mix)"],
+        "トキメキライツ":["TOKIMEKI LIGHTS"],
+        "トキメキライツ":["TOKIMEKI LIGHTS (Album-mix)"],
+        "スタトレ":["STAR TRAIN"],
+        "スタトレ":["STAR TRAIN (Album-mix)"],
+        "リラクシ":["Relax In The City"],
+        "ピックミー":["Pick Me Up"],
+        "くりんくりん":["Cling Cling"],
+        "くりんくりん":["Cling Cling (Album-mix)"],
+        "クリンクリン":["Cling Cling"],
+        "クリンクリン":["Cling Cling (Album-mix)"],
+        "FP":["Future Pop"],
+        "イフワナ":["If you wanna"],
+        "イフュワナ":["If you wanna"],
+        "イワナ":["If you wanna"],
+        "罠":["If you wanna"],
+        "TG":["TOKYO GIRL"],
+        "フュージョン":["FUSION"],
+        "スイカ割り":["超来輪"],
+        "すいかわり":["超来輪"],
+        "ナナナ":["ナナナナナイロ"],
+        
+        "ぷらずま":["Plasma"],
+        "ぷらずまぁ":["Plasma"],
+        "プラズマ":["Plasma"],
+        "ﾌﾟﾗｽﾞﾏ":["Plasma"],
+        "ｽﾞﾏ":["Plasma"],
+        "タイムワ":["Time Warp"],
+        //"タイムワ":["Time Warp (v1.1)"],
+        "TW":["Time Warp"],
+        "ポリゴンウェイブ":["ポリゴンウェイヴ"],
+        "ポリゴン":["ポリゴンウェイヴ"],
+        "ポヴ":["ポリゴンウェイヴ"],
+        "スピワ":["Spinning World"],
+        "スピニンウォウ":["Spinning World"],
+        "ｽﾋﾟﾆﾝｳォｳ":["Spinning World"],
+        "ミラーボール":["マワルカガミ"],
+       // "ミラーボール":"マワルカガミ(polygon wave live ver.)",
+        "ミラーボール(仮)":["マワルカガミ"],
+       // "ミラーボール(仮)":"マワルカガミ(polygon wave live ver.)",
+        "ドライビン":["Drive’n The Rain"],
+        "ドライビンザレイン":["Drive’n The Rain"],
+        "どらいびん":["Drive’n The Rain"],
+        "ビトちゃん":["ハテナビト"],
+        "アンド":["アンドロイド＆"],
+        "&":["アンドロイド＆"],
+        "さよプラ":["さよならプラスティックワールド"],
 
-        "7天":"SEVENTH HEAVEN",
-        "七天":'SEVENTH HEAVEN',
-        "セブンスヘブン":"SEVENTH HEAVEN",
-        "フェイキ":"FAKE IT",
-        "ハリバリ":"Hurly Burly",
-        "イミワ":"イミテーションワールド",
-        "いじハロ":"いじわるなハロー",
-        "ジェニー":"ジェニーはご機嫌ななめ",
-        "彼募":"彼氏募集中",
-        "かれぼ":"彼氏募集中",
-        "おまペロ":"OMAJINAI★ペロリ",
-        "おまぺろ":"OMAJINAI★ペロリ",
+        "恋雲":["ラヴ・クラウド"],
+        "コズトリ":["Cosmic Treat"],
+        "今":["IMA IMA IMA"],
+        "IMA":["IMA IMA IMA"],
+        "すみっコ":["すみっコディスコ"],
+        "すみっこ":["すみっコディスコ"],
+        "熱帯夜":["時空花"],
+
+        "7天":["SEVENTH HEAVEN"],
+        "七天":['SEVENTH HEAVEN'],
+        "セブンスヘブン":["SEVENTH HEAVEN"],
+        "フェイキ":["FAKE IT"],
+        "ハリバリ":["Hurly Burly"],
+        "イミワ":["イミテーションワールド"],
+        "いじハロ":["いじわるなハロー"],
+        "ジェニー":["ジェニーはご機嫌ななめ"],
+        "彼募":["彼氏募集中"],
+        "かれぼ":["彼氏募集中"],
+        "おまペロ":["OMAJINAI★ペロリ"],
+        "おまぺろ":["OMAJINAI★ペロリ"],
+
+    
+
+        
 
       };
 
-  
-  // 曲名を小文字にして統一
-  const lowercaseData = {};
-      for (let songName in data) {
-        lowercaseData[songName.toLowerCase().replace(/\s+/g, '')] = songName;  // 空白も削除
-      }
-      for (let alias in aliases) {
-        lowercaseData[alias.toLowerCase().replace(/\s+/g, '')] = aliases[alias];  // 通称も小文字にして空白削除
-      }
+      const lowercaseData = {};
+  for (let songName in data) {
+    lowercaseData[songName.toLowerCase()] = { song: songName, catalogNumber: data[songName] };
+  }
 
-      let searchHistory = [];
+  for (let alias in aliases) {
+    aliases[alias].forEach(officialSong => {
+      lowercaseData[alias.toLowerCase()] = { song: officialSong, catalogNumber: data[officialSong] };
+    });
+  }
 
-      document.getElementById('search-btn').addEventListener('click', searchCatalogNumber);
+  let searchHistory = [];
 
-      function searchCatalogNumber() {
-        const songNameInput = document.getElementById('song-name').value.trim().toLowerCase().replace(/\s+/g, ''); // 入力値を小文字にし、空白を削除
-        const correctSongName = lowercaseData[songNameInput]; // 正しい表記を取得
-        const result = correctSongName ? `${correctSongName} - 品番: ${data[correctSongName]}` : "曲名が見つかりませんでした🥺"; 
+  document.getElementById('search-btn').addEventListener('click', searchCatalogNumber);
 
-        document.getElementById('result').innerText = `検索結果: ${result}`;
+  function searchCatalogNumber() {
+    const songNameInput = document.getElementById('song-name').value.trim().toLowerCase();
+    const resultElement = document.getElementById('result');
 
-        if (correctSongName && result !== "曲名が見つかりませんでした🥺") {
-          searchHistory.push({ songName: correctSongName, catalogNumber: data[correctSongName] });
-          displayHistory();
+    if (!songNameInput) {
+      alert("曲名を入力してください！");
+      return;
+    }
+
+    const songVersions = [];
+    const seen = new Set();
+
+    if (aliases[songNameInput]) {
+      aliases[songNameInput].forEach(officialSong => {
+        for (const key in lowercaseData) {
+          if (key.includes(officialSong.toLowerCase()) && !seen.has(lowercaseData[key].song)) {
+            seen.add(lowercaseData[key].song);
+            songVersions.push(lowercaseData[key]);
+          }
+        }
+      });
+    } else {
+      for (const key in lowercaseData) {
+        if (key.includes(songNameInput) && !seen.has(lowercaseData[key].song)) {
+          seen.add(lowercaseData[key].song);
+          songVersions.push(lowercaseData[key]);
         }
       }
+    }
 
-      function displayHistory() {
-        const historyList = document.getElementById('history');
-        historyList.innerHTML = ''; // 履歴リセット
-
-        searchHistory.forEach(entry => {
+    if (songVersions.length > 0) {
+      if (songVersions.length > 1) {
+        resultElement.innerHTML = "該当する曲がいくつか見つかりました。選んでください。<br>";
+        const list = document.createElement('ul');
+        songVersions.forEach(version => {
           const listItem = document.createElement('li');
-          const songNameElem = document.createElement('span');
-          songNameElem.textContent = entry.songName;
-
-          const catalogNumberElem = document.createElement('span');
-          catalogNumberElem.textContent = entry.catalogNumber;
-          catalogNumberElem.classList.add('catalog-number');
-          
-          catalogNumberElem.addEventListener('click', () => {
-            navigator.clipboard.writeText(entry.catalogNumber).then(() => {
-              alert('品番がコピーされました😍');
-            });
-          });
-
-          listItem.appendChild(songNameElem);
-          listItem.appendChild(catalogNumberElem);
-          historyList.appendChild(listItem);
+          const button = document.createElement('button');
+          button.textContent = `${version.song} `;
+          //- 品番: ${version.catalogNumber}
+          button.onclick = () => {
+            displaySongResult(version);
+            addToHistory(version);
+          };
+          listItem.appendChild(button);
+          list.appendChild(listItem);
         });
+        resultElement.appendChild(list);
+      } else {
+        displaySongResult(songVersions[0]);
+        addToHistory(songVersions[0]);
       }
+    } else {
+      resultElement.innerText = "申し訳ありませんが、該当する曲が見つかりませんでした。もう一度お試しください。";
+    }
+  }
 
-      document.getElementById('copy-all-btn').addEventListener('click', () => {
-        const allCatalogNumbers = searchHistory.map(entry => entry.catalogNumber).join('\n');
-        navigator.clipboard.writeText(allCatalogNumbers).then(() => {
-          alert('すべての品番がコピーされました🤩');
-        });
-      });
+  function displaySongResult(version) {
+    const resultElement = document.getElementById('result');
+    resultElement.innerHTML = `検索結果: ${version.song} - 品番: ${version.catalogNumber}`;
+  }
+
+  function addToHistory(version) {
+    searchHistory.push(version);
+    updateHistoryDisplay();
+  }
+
+  function updateHistoryDisplay() {
+  const historyElement = document.getElementById('history');
+  historyElement.innerHTML = "";
+
+  if (searchHistory.length > 0) {
+    const list = document.createElement('ul');
+    searchHistory.forEach((item, index) => {
+      const listItem = document.createElement('li');
+      listItem.innerHTML = `${item.song} : <span class="catalog-number" onclick="copyToClipboard('${item.catalogNumber}')">${item.catalogNumber}</span>`;
+      
+      // 削除ボタンの追加
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = "削除";
+      deleteButton.classList.add('delete-button');
+      deleteButton.onclick = () => deleteFromHistory(index); // この曲だけ削除
+
+      listItem.appendChild(deleteButton);
+      list.appendChild(listItem);
     });
+    historyElement.appendChild(list);
+  }
+
+  // 履歴に2曲以上ある場合にボタンを表示
+  if (searchHistory.length >= 2) {
+    document.getElementById('copy-all-btn').style.display = 'inline-block';
+    document.getElementById('clear-history-btn').style.display = 'inline-block';
+  } else {
+    document.getElementById('copy-all-btn').style.display = 'none';
+    document.getElementById('clear-history-btn').style.display = 'none';
+  }
+}
+
+
+  // 履歴を全てクリア
+  document.getElementById('clear-history-btn').addEventListener('click', function() {
+    searchHistory = [];
+    updateHistoryDisplay();
+  });
+
+  // 一曲ずつ履歴を削除する
+  function deleteFromHistory(index) {
+    searchHistory.splice(index, 1);
+    updateHistoryDisplay();
+  }
+
+  // 履歴の品番をまとめてコピー
+  document.getElementById('copy-all-btn').addEventListener('click', function() {
+    const allCatalogNumbers = searchHistory.map(item => item.catalogNumber).join('\n');
+    navigator.clipboard.writeText(allCatalogNumbers);
+    alert("品番をまとめてコピーしました😍");
+  });
+
+  window.copyToClipboard = function(catalogNumber) {
+    navigator.clipboard.writeText(catalogNumber);
+    alert(`${catalogNumber}をコピーしました🤩` );
+  };
+});
   </script>
 </body>
 </html>
