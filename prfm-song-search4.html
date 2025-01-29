@@ -587,7 +587,7 @@
     const list = document.createElement('ul');
     searchHistory.forEach((item, index) => {
       const listItem = document.createElement('li');
-      listItem.innerHTML = `${item.song} : <span class="catalog-number" onclick="copyToClipboard('${item.catalogNumber}')">${item.catalogNumber}</span>`;
+      listItem.innerHTML = `${item.song}  <span class="catalog-number" onclick="copyToClipboard('${item.catalogNumber}')">${item.catalogNumber}</span>`;
       
       // 削除ボタンの追加
       const deleteButton = document.createElement('button');
